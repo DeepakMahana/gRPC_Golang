@@ -1,0 +1,135 @@
+syntax = "proto3";
+
+package greet;
+option go_package="./greet/greetpb";
+
+message Greeting{
+    string first_name = 1;
+    string last_name = 2;
+}
+
+// Unary
+message GreetRequest{
+    Greeting greeting = 1;
+}
+
+message GreetResponse{
+    string result = 1;
+}
+
+// Server Stream
+message GreetManyTimesRequest{
+    Greeting greeting = 1;
+}
+
+message GreetManyTimesResponse{
+    string result = 1;
+}
+
+// Client Streaming
+message LongGreetRequest{
+    Greeting greeting = 1;
+}
+
+message LongGreetResponse{
+    string result = 1;
+}
+
+// Bidirectional Streaming
+message GreetEveryoneRequest {
+    Greeting greeting = 1;
+}
+
+message GreetEveryoneResponse {
+    string result = 1;
+}
+
+// Exercise
+
+message CalculateValues{
+    int32 x = 1;
+    int32 y = 2;
+}
+
+// Unary
+message CalculateRequest{
+    CalculateValues calvalue = 1;
+}
+
+message CalculateResponse{
+    string result = 2;
+}
+
+// Server Stream
+message PrimeNumberDecompositionRequest {
+    int64 number = 1;
+}
+
+message PrimeNumberDecompositionResponse {
+    int64 prime_factor = 1;
+}
+
+// Client Streaming
+message ComputeAverageRequest {
+    int32 number = 1;
+}
+
+message ComputeAverageResponse {
+    double average = 1;
+}
+
+// Bidirectional Stream
+message FindMaximumRequest {
+    int32 number = 1;
+}
+
+message FindMaximumResponse {
+    int32 maximum = 1;
+}
+
+// Error codes
+message SquareRootRequest {
+    int32 number = 1;
+}
+
+message SquareRootResponse {
+    double number_root = 1;
+}
+
+// Deadline
+message GreetWithDeadlineRequest {
+    Greeting greeting = 1;
+}
+
+message GreetWithDeadlineResponse {
+    string result = 1;
+}
+
+service GreetService{
+
+    // Unary API
+    rpc Greet (GreetRequest) returns (GreetResponse) {};
+    rpc CalculateSum (CalculateRequest) returns (CalculateResponse) {};
+ 
+    // Server Streaming
+    rpc GreetManyTimes(GreetManyTimesRequest) returns (stream GreetManyTimesResponse) {};
+    rpc PrimeNumberDecomposition(PrimeNumberDecompositionRequest) returns (stream PrimeNumberDecompositionResponse) {};
+
+    // Client Streaming
+    rpc LongGreet(stream LongGreetRequest) returns (LongGreetResponse) {};
+    rpc ComputeAverage(stream ComputeAverageRequest) returns (ComputeAverageResponse) {};
+
+    // BiDirectional Streaming
+    rpc GreetEveryone(stream GreetEveryoneRequest) returns (stream GreetEveryoneResponse) {};
+    rpc FindMaximum(stream FindMaximumRequest) returns (stream FindMaximumResponse) {};
+
+    // Error Handling
+    // it will Throw and Exception if the sent number is negative
+    // The error being sent is of the type INVALID_ARGUMENT
+    rpc SquareRoot(SquareRootRequest) returns (SquareRootResponse) {};
+
+    // RPC with Deadline
+    rpc GreetWithDeadline(GreetWithDeadlineRequest) returns (GreetWithDeadlineResponse) {};
+
+}
+
